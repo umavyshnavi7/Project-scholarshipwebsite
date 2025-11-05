@@ -139,17 +139,6 @@ function AdminDashboard() {
         </AnimatedCard>
       </div>
 
-      <AnimatedCard delay={400}>
-        <Chart 
-          title="Application Status Overview"
-          data={[
-            { label: 'Pending', value: scholarshipStats.pendingApplications },
-            { label: 'Approved', value: scholarshipStats.approvedApplications },
-            { label: 'Total', value: applications.length }
-          ]}
-        />
-      </AnimatedCard>
-
       <div className="admin-content">
         <section className="scholarships-section">
           <div className="section-header">
@@ -259,9 +248,9 @@ function AdminDashboard() {
           </div>
         </section>
 
-        <section className="applications-section">
+        <section className="applications-section purple-theme">
           <div className="section-header">
-            <h2>Applications Review</h2>
+            <h2 className="purple-title">Applications Review</h2>
             <input
               type="text"
               placeholder="Search by student name..."
