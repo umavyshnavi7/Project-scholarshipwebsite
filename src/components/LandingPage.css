@@ -41,11 +41,15 @@
 }
 
 .nav-link {
-  text-decoration: none;
+  background: none;
+  border: none;
   color: #4a5568;
   font-weight: 500;
   transition: all 0.3s ease;
   position: relative;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.5rem 0;
 }
 
 .nav-link:hover {
@@ -391,6 +395,96 @@
 .feature-card p {
   color: #718096;
   line-height: 1.6;
+}
+
+/* Scholarships Section */
+.scholarships-section {
+  padding: 6rem 2rem;
+  background: #f8fafc;
+}
+
+.scholarships-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.scholarship-preview-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.scholarship-preview-card:hover {
+  transform: translateY(-5px);
+}
+
+.scholarship-preview-card h3 {
+  color: #2d3748;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.scholarship-preview-card p {
+  color: #718096;
+  margin-bottom: 1.5rem;
+}
+
+.scholarship-preview-card .amount {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* About Section */
+.about-section {
+  padding: 6rem 2rem;
+  background: white;
+}
+
+.about-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about-text h2 {
+  font-size: 2.5rem;
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+}
+
+.about-text p {
+  font-size: 1.2rem;
+  color: #718096;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.about-features {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.about-feature {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #4a5568;
+}
+
+.feature-icon {
+  font-size: 1.5rem;
 }
 
 /* CTA Section */

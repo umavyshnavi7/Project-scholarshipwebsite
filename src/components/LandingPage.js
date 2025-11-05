@@ -5,6 +5,13 @@ import './LandingPage.css';
 function LandingPage() {
   const navigate = useNavigate();
 
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="landing-page">
       <nav className="navbar">
@@ -15,9 +22,9 @@ function LandingPage() {
           </div>
         </div>
         <div className="nav-links">
-          <a href="#features" className="nav-link">Features</a>
-          <a href="#scholarships" className="nav-link">Scholarships</a>
-          <a href="#about" className="nav-link">About</a>
+          <button onClick={() => scrollToSection('features')} className="nav-link">Features</button>
+          <button onClick={() => scrollToSection('scholarships')} className="nav-link">Scholarships</button>
+          <button onClick={() => scrollToSection('about')} className="nav-link">About</button>
           <div className="nav-buttons">
             <button 
               className="nav-btn login-nav-btn"
@@ -145,6 +152,59 @@ function LandingPage() {
               <div className="feature-icon">📊</div>
               <h3>Progress Dashboard</h3>
               <p>Monitor your application status from submission to final decision all in one place.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Scholarships Section */}
+      <section id="scholarships" className="scholarships-section">
+        <div className="container">
+          <div className="section-header">
+            <h2>Available Scholarships</h2>
+            <p>Discover opportunities that match your goals</p>
+          </div>
+          <div className="scholarships-preview">
+            <div className="scholarship-preview-card">
+              <h3>Merit-Based Excellence</h3>
+              <p>For outstanding academic achievers</p>
+              <span className="amount">$5,000</span>
+            </div>
+            <div className="scholarship-preview-card">
+              <h3>STEM Innovation Grant</h3>
+              <p>Supporting future scientists and engineers</p>
+              <span className="amount">$3,000</span>
+            </div>
+            <div className="scholarship-preview-card">
+              <h3>Community Leadership</h3>
+              <p>Recognizing community contributors</p>
+              <span className="amount">$2,000</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="about-section">
+        <div className="container">
+          <div className="about-content">
+            <div className="about-text">
+              <h2>About ScholarTrack</h2>
+              <p>ScholarTrack is dedicated to making higher education accessible by connecting students with scholarship opportunities. Our platform simplifies the application process and helps students track their progress.</p>
+              <div className="about-features">
+                <div className="about-feature">
+                  <span className="feature-icon">🎯</span>
+                  <span>Personalized matching</span>
+                </div>
+                <div className="about-feature">
+                  <span className="feature-icon">📊</span>
+                  <span>Progress tracking</span>
+                </div>
+                <div className="about-feature">
+                  <span className="feature-icon">🔔</span>
+                  <span>Deadline reminders</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
