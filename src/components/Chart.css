@@ -1,0 +1,69 @@
+.chart-container {
+  background: var(--card-bg, white);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow, 0 4px 12px rgba(0,0,0,0.1));
+  margin: 1rem 0;
+}
+
+.chart-title {
+  color: var(--text-primary, #2d3748);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.chart {
+  display: flex;
+  align-items: end;
+  justify-content: space-around;
+  height: 200px;
+  gap: 1rem;
+}
+
+.chart-bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.chart-bar {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  width: 100%;
+  max-width: 40px;
+  border-radius: 4px 4px 0 0;
+  position: relative;
+  animation: growUp 0.8s ease-out forwards;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  padding-bottom: 4px;
+}
+
+.chart-value {
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.chart-label {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary, #666);
+  text-align: center;
+}
+
+@keyframes growUp {
+  to {
+    transform: scaleY(1);
+  }
+}
+
+[data-theme="dark"] .chart-container {
+  --card-bg: #2d3748;
+  --text-primary: #e2e8f0;
+  --text-secondary: #a0aec0;
+  --shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
