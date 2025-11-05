@@ -6,6 +6,7 @@ const initialState = {
   user: null,
   scholarships: [],
   applications: [],
+  notifications: [],
   loading: false,
   error: null
 };
@@ -45,6 +46,16 @@ function appReducer(state, action) {
           app.id === action.payload.id ? action.payload : app
         )
       };
+    case 'ADD_NOTIFICATION':
+      return {
+        ...state,
+        notifications: [action.payload, ...state.notifications]
+      };
+    case 'SET_NOTIFICATIONS':
+      return {
+        ...state,
+        notifications: action.payload
+      };
     default:
       return state;
   }
@@ -61,6 +72,7 @@ export function AppProvider({ children }) {
     
     loadScholarships();
     loadApplications();
+    loadNotifications();
   }, []);
 
   const loadScholarships = () => {
@@ -111,6 +123,30 @@ export function AppProvider({ children }) {
       }
     ];
     dispatch({ type: 'SET_APPLICATIONS', payload: applications });
+  };
+
+  const loadNotifications = () => {
+    const notifications = [
+      {
+        id: 1,
+        message: "New scholarship 'STEM Innovation Grant' is now available!",
+        time: "2 hours ago",
+        read: false
+      },
+      {
+        id: 2,
+        message: "Application deadline reminder: Merit-Based Excellence Scholarship due in 3 days",
+        time: "1 day ago",
+        read: false
+      },
+      {
+        id: 3,
+        message: "Your application for Community Leadership Award has been approved!",
+        time: "2 days ago",
+        read: true
+      }
+    ];
+    dispatch({ type: 'SET_NOTIFICATIONS', payload: notifications });
   };
 
   return (

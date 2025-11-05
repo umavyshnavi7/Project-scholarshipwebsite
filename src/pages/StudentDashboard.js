@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
+import { useApp } from '../contexts/AppContext';
+import { useAuth } from '../hooks/useAuth';
+import NotificationBell from '../components/NotificationBell';
 import './StudentDashboard.css';
 
-function StudentDashboard({ user, onLogout }) {
+function StudentDashboard() {
+  const { state } = useApp();
+  const { user, notifications } = state;
+  const { logout } = useAuth();
   const [applications, setApplications] = useState([
     {
       id: 1,
@@ -76,8 +82,9 @@ function StudentDashboard({ user, onLogout }) {
           <h1>Scholarship Management - Student Portal</h1>
         </div>
         <div className="header-right">
+          <NotificationBell notifications={notifications} />
           <span>Welcome, {user?.name}</span>
-          <button className="logout-btn" onClick={onLogout}>Logout</button>
+          <button className="logout-btn" onClick={logout}>Logout</button>
         </div>
       </header>
 
