@@ -396,6 +396,126 @@
   color: #4CAF50;
 }
 
+/* Application Form */
+.application-form {
+  margin-top: 1rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #faf5ff 0%, #ffffff 100%);
+  border: 2px solid #e9d5ff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(139, 69, 193, 0.1);
+}
+
+.application-form h4 {
+  color: #8b45c1;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.application-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.application-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #6b46c1;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.application-form input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid #e9d5ff;
+  border-radius: 8px;
+  background: #faf5ff;
+  color: #2d3748;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.application-form input:focus {
+  outline: none;
+  border-color: #8b45c1;
+  box-shadow: 0 0 0 3px rgba(139, 69, 193, 0.1);
+}
+
+.application-form .form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, #8b45c1 0%, #6b46c1 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 69, 193, 0.3);
+}
+
+.cancel-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background: #5a6268;
+  transform: translateY(-1px);
+}
+
+.application-form select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid #e9d5ff;
+  border-radius: 8px;
+  background: #faf5ff;
+  color: #2d3748;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.application-form select:focus {
+  outline: none;
+  border-color: #8b45c1;
+  box-shadow: 0 0 0 3px rgba(139, 69, 193, 0.1);
+}
+
+.level-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.level-badge.undergraduate {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+}
+
+.level-badge.postgraduate {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  color: white;
+}
+
 @media (max-width: 768px) {
   .admin-content,
   .student-content {

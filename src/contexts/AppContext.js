@@ -106,7 +106,12 @@ export function AppProvider({ children }) {
         studentName: "John Smith",
         email: "john.smith@university.edu",
         scholarship: "Merit-Based Excellence Scholarship",
+        educationLevel: "undergraduate",
         gpa: 3.9,
+        percentage: 89,
+        tenthMarks: 92,
+        interMarks: 88,
+        gateScore: 78,
         amount: 5000,
         submittedDate: "2025-01-01",
         status: "pending"
@@ -116,10 +121,30 @@ export function AppProvider({ children }) {
         studentName: "Sarah Johnson",
         email: "sarah.j@university.edu",
         scholarship: "STEM Innovation Grant",
+        educationLevel: "postgraduate",
         gpa: 3.8,
+        percentage: 92,
+        tenthMarks: 95,
+        interMarks: 90,
+        gateScore: 82,
         amount: 3000,
         submittedDate: "2025-10-28",
         status: "under review"
+      },
+      {
+        id: 3,
+        studentName: "Michael Chen",
+        email: "michael.chen@university.edu",
+        scholarship: "Community Leadership Award",
+        educationLevel: "undergraduate",
+        gpa: 3.7,
+        percentage: 85,
+        tenthMarks: 87,
+        interMarks: 83,
+        gateScore: 75,
+        amount: 2000,
+        submittedDate: "2025-10-25",
+        status: "approved"
       }
     ];
     dispatch({ type: 'SET_APPLICATIONS', payload: applications });

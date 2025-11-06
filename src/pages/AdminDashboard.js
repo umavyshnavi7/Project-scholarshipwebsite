@@ -94,11 +94,44 @@ function AdminDashboard() {
   };
 
   const [searchFilter, setSearchFilter] = useState('');
+  const [filters, setFilters] = useState({
+    minGpa: '',
+    maxGpa: '',
+    minPercentage: '',
+    maxPercentage: '',
+    minGateScore: '',
+    maxGateScore: '',
+    minTenthMarks: '',
+    maxTenthMarks: '',
+    minInterMarks: '',
+    maxInterMarks: '',
+    educationLevel: ''
+  });
   
-  const { filteredData: filteredApplications, stats } = usePerformance(
-    applications, 
-    { studentName: searchFilter }
-  );
+  const filteredApplications = useMemo(() => {
+    return applications.filter(app => {
+      const matchesName = !searchFilter || app.studentName.toLowerCase().includes(searchFilter.toLowerCase());
+      const matchesGpa = (!filters.minGpa || app.gpa >= parseFloat(filters.minGpa)) &&
+                        (!filters.maxGpa || app.gpa <= parseFloat(filters.maxGpa));
+      const matchesPercentage = (!filters.minPercentage || app.percentage >= parseFloat(filters.minPercentage)) &&
+                               (!filters.maxPercentage || app.percentage <= parseFloat(filters.maxPercentage));
+      const matchesGate = (!filters.minGateScore || app.gateScore >= parseFloat(filters.minGateScore)) &&
+                         (!filters.maxGateScore || app.gateScore <= parseFloat(filters.maxGateScore));
+      const matchesTenth = (!filters.minTenthMarks || app.tenthMarks >= parseFloat(filters.minTenthMarks)) &&
+                          (!filters.maxTenthMarks || app.tenthMarks <= parseFloat(filters.maxTenthMarks));
+      const matchesInter = (!filters.minInterMarks || app.interMarks >= parseFloat(filters.minInterMarks)) &&
+                          (!filters.maxInterMarks || app.interMarks <= parseFloat(filters.maxInterMarks));
+      const matchesLevel = !filters.educationLevel || app.educationLevel === filters.educationLevel;
+      
+      return matchesName && matchesGpa && matchesPercentage && matchesGate && matchesTenth && matchesInter && matchesLevel;
+    });
+  }, [applications, searchFilter, filters]);
+  
+  const stats = useMemo(() => ({
+    pending: filteredApplications.filter(app => app.status === 'pending').length,
+    approved: filteredApplications.filter(app => app.status === 'approved').length,
+    totalAmount: filteredApplications.reduce((sum, app) => sum + (app.amount || 0), 0)
+  }), [filteredApplications]);
   
   const scholarshipStats = useMemo(() => ({
     totalScholarships: scholarships.length,
@@ -198,13 +231,19 @@ function AdminDashboard() {
                   </div>
                   <div className="form-group">
                     <label>Category</label>
-                    <input
-                      type="text"
-                      placeholder="e.g., Academic, STEM, Arts"
+                    <select
                       value={newScholarship.category}
                       onChange={(e) => setNewScholarship({...newScholarship, category: e.target.value})}
                       required
-                    />
+                    >
+                      <option value="">Select Category</option>
+                      <option value="Academic">Academic</option>
+                      <option value="STEM">STEM</option>
+                      <option value="Arts">Arts</option>
+                      <option value="Sports">Sports</option>
+                      <option value="Community Service">Community Service</option>
+                      <option value="Leadership">Leadership</option>
+                    </select>
                   </div>
                 </div>
                 <div className="form-actions">
@@ -251,13 +290,142 @@ function AdminDashboard() {
         <section className="applications-section purple-theme">
           <div className="section-header">
             <h2 className="purple-title">Applications Review</h2>
-            <input
-              type="text"
-              placeholder="Search by student name..."
-              value={searchFilter}
-              onChange={(e) => setSearchFilter(e.target.value)}
-              className="search-input"
-            />
+            <div className="filter-controls">
+              <input
+                type="text"
+                placeholder="Search by name..."
+                value={searchFilter}
+                onChange={(e) => setSearchFilter(e.target.value)}
+                className="search-input"
+              />
+              <div className="filter-row">
+                <div className="filter-group">
+                  <label>GPA Range:</label>
+                  <input
+                    type="number"
+                    placeholder="Min"
+                    step="0.1"
+                    min="0"
+                    max="4"
+                    value={filters.minGpa}
+                    onChange={(e) => setFilters({...filters, minGpa: e.target.value})}
+                    className="filter-input"
+                  />
+                  <input
+                    type="number"
+                    placeholder="Max"
+                    step="0.1"
+                    min="0"
+                    max="4"
+                    value={filters.maxGpa}
+                    onChange={(e) => setFilters({...filters, maxGpa: e.target.value})}
+                    className="filter-input"
+                  />
+                </div>
+                <div className="filter-group">
+                  <label>Percentage:</label>
+                  <input
+                    type="number"
+                    placeholder="Min %"
+                    min="0"
+                    max="100"
+                    value={filters.minPercentage}
+                    onChange={(e) => setFilters({...filters, minPercentage: e.target.value})}
+                    className="filter-input"
+                  />
+                  <input
+                    type="number"
+                    placeholder="Max %"
+                    min="0"
+                    max="100"
+                    value={filters.maxPercentage}
+                    onChange={(e) => setFilters({...filters, maxPercentage: e.target.value})}
+                    className="filter-input"
+                  />
+                </div>
+                <div className="filter-group">
+                  <label>GATE Score:</label>
+                  <input
+                    type="number"
+                    placeholder="Min"
+                    min="0"
+                    max="100"
+                    value={filters.minGateScore}
+                    onChange={(e) => setFilters({...filters, minGateScore: e.target.value})}
+                    className="filter-input"
+                  />
+                  <input
+                    type="number"
+                    placeholder="Max"
+                    min="0"
+                    max="100"
+                    value={filters.maxGateScore}
+                    onChange={(e) => setFilters({...filters, maxGateScore: e.target.value})}
+                    className="filter-input"
+                  />
+                </div>
+                <div className="filter-group">
+                  <label>10th Marks:</label>
+                  <input
+                    type="number"
+                    placeholder="Min %"
+                    min="0"
+                    max="100"
+                    value={filters.minTenthMarks}
+                    onChange={(e) => setFilters({...filters, minTenthMarks: e.target.value})}
+                    className="filter-input"
+                  />
+                  <input
+                    type="number"
+                    placeholder="Max %"
+                    min="0"
+                    max="100"
+                    value={filters.maxTenthMarks}
+                    onChange={(e) => setFilters({...filters, maxTenthMarks: e.target.value})}
+                    className="filter-input"
+                  />
+                </div>
+                <div className="filter-group">
+                  <label>Inter Marks:</label>
+                  <input
+                    type="number"
+                    placeholder="Min %"
+                    min="0"
+                    max="100"
+                    value={filters.minInterMarks}
+                    onChange={(e) => setFilters({...filters, minInterMarks: e.target.value})}
+                    className="filter-input"
+                  />
+                  <input
+                    type="number"
+                    placeholder="Max %"
+                    min="0"
+                    max="100"
+                    value={filters.maxInterMarks}
+                    onChange={(e) => setFilters({...filters, maxInterMarks: e.target.value})}
+                    className="filter-input"
+                  />
+                </div>
+                <div className="filter-group">
+                  <label>Education Level:</label>
+                  <select
+                    value={filters.educationLevel}
+                    onChange={(e) => setFilters({...filters, educationLevel: e.target.value})}
+                    className="filter-select"
+                  >
+                    <option value="">All Levels</option>
+                    <option value="undergraduate">Undergraduate</option>
+                    <option value="postgraduate">Postgraduate</option>
+                  </select>
+                </div>
+                <button 
+                  onClick={() => setFilters({minGpa: '', maxGpa: '', minPercentage: '', maxPercentage: '', minGateScore: '', maxGateScore: '', minTenthMarks: '', maxTenthMarks: '', minInterMarks: '', maxInterMarks: '', educationLevel: ''})}
+                  className="clear-filters-btn"
+                >
+                  Clear Filters
+                </button>
+              </div>
+            </div>
           </div>
           <AnimatedCard delay={500} className="applications-table">
             <table>
@@ -265,7 +433,12 @@ function AdminDashboard() {
                 <tr>
                   <th>Student</th>
                   <th>Scholarship</th>
+                  <th>Level</th>
                   <th>GPA</th>
+                  <th>Percentage</th>
+                  <th>10th Marks</th>
+                  <th>Inter Marks</th>
+                  <th>GATE Score</th>
                   <th>Amount</th>
                   <th>Submitted</th>
                   <th>Status</th>
@@ -279,10 +452,20 @@ function AdminDashboard() {
                       <div className="student-info">
                         <strong>{app.studentName}</strong>
                         <small>{app.email}</small>
+                        <span className="student-id">ID: {app.id}00{Math.floor(Math.random() * 999) + 100}</span>
                       </div>
                     </td>
                     <td>{app.scholarship}</td>
+                    <td>
+                      <span className={`level-badge ${app.educationLevel}`}>
+                        {app.educationLevel === 'undergraduate' ? 'UG' : 'PG'}
+                      </span>
+                    </td>
                     <td>{app.gpa}</td>
+                    <td>{app.percentage}%</td>
+                    <td>{app.tenthMarks}%</td>
+                    <td>{app.interMarks}%</td>
+                    <td>{app.gateScore}</td>
                     <td>${app.amount.toLocaleString()}</td>
                     <td>{app.submittedDate}</td>
                     <td>

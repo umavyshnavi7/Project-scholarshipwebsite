@@ -28,43 +28,67 @@ function StudentDashboard() {
   const [availableScholarships] = useState([
     {
       id: 1,
-      title: "Merit-Based Excellence Scholarship",
-      description: "Awarded to students demonstrating outstanding academic achievement and leadership potential.",
-      amount: 5000,
-      deadline: "2025-12-31",
-      category: "Academic",
+      title: "Athletic Excellence Scholarship",
+      description: "Supporting outstanding student-athletes who excel in sports and academics.",
+      amount: 4000,
+      deadline: "2025-12-15",
+      category: "Sports",
       status: "open"
     },
     {
       id: 2,
-      title: "STEM Innovation Grant",
-      description: "Supporting students pursuing degrees in Science, Technology, Engineering, and Mathematics.",
-      amount: 3000,
-      deadline: "2025-11-30",
-      category: "STEM",
-      status: "open"
-    },
-    {
-      id: 3,
-      title: "Community Leadership Award",
-      description: "Recognizing students who have made significant contributions to their communities.",
-      amount: 2000,
-      deadline: "2026-01-15",
-      category: "Community Service",
+      title: "Sports Leadership Grant",
+      description: "For students who demonstrate leadership skills in sports and team activities.",
+      amount: 3500,
+      deadline: "2026-01-30",
+      category: "Sports",
       status: "open"
     }
   ]);
 
+  const [showApplicationForm, setShowApplicationForm] = useState(null);
+  const [applicationData, setApplicationData] = useState({
+    educationLevel: 'undergraduate',
+    gpa: '',
+    percentage: '',
+    gateScore: '',
+    tenthMarks: '',
+    interMarks: ''
+  });
+
   const applyForScholarship = (scholarshipId) => {
-    const scholarship = availableScholarships.find(s => s.id === scholarshipId);
+    setShowApplicationForm(scholarshipId);
+  };
+
+  const submitApplication = (e) => {
+    e.preventDefault();
+    
+    // Validate all fields are filled
+    if (!applicationData.gpa || !applicationData.percentage || !applicationData.gateScore || 
+        !applicationData.tenthMarks || !applicationData.interMarks) {
+      alert('Please fill in all required fields');
+      return;
+    }
+    
+    const scholarship = availableScholarships.find(s => s.id === showApplicationForm);
     const newApplication = {
       id: applications.length + 1,
+      studentName: user?.name || 'Student',
+      email: user?.email || 'student@email.com',
       scholarship: scholarship.title,
+      educationLevel: applicationData.educationLevel,
+      gpa: parseFloat(applicationData.gpa),
+      percentage: parseFloat(applicationData.percentage),
+      gateScore: parseFloat(applicationData.gateScore),
+      tenthMarks: parseFloat(applicationData.tenthMarks),
+      interMarks: parseFloat(applicationData.interMarks),
       submittedDate: new Date().toISOString().split('T')[0],
       amount: scholarship.amount,
       status: "pending"
     };
     setApplications([...applications, newApplication]);
+    setApplicationData({ educationLevel: 'undergraduate', gpa: '', percentage: '', gateScore: '', tenthMarks: '', interMarks: '' });
+    setShowApplicationForm(null);
     alert(`Applied for ${scholarship.title} successfully!`);
   };
 
@@ -112,7 +136,10 @@ function StudentDashboard() {
               <option>All Categories</option>
               <option>Academic</option>
               <option>STEM</option>
+              <option>Arts</option>
+              <option>Sports</option>
               <option>Community Service</option>
+              <option>Leadership</option>
             </select>
           </div>
 
@@ -138,6 +165,85 @@ function StudentDashboard() {
                   >
                     {hasApplied ? 'Applied' : 'Apply Now'}
                   </button>
+                  
+                  {showApplicationForm === scholarship.id && (
+                    <div className="application-form">
+                      <h4>Application Details</h4>
+                      <form onSubmit={submitApplication}>
+                        <div className="form-group">
+                          <label>Education Level:</label>
+                          <select
+                            value={applicationData.educationLevel}
+                            onChange={(e) => setApplicationData({...applicationData, educationLevel: e.target.value})}
+                            required
+                          >
+                            <option value="undergraduate">Undergraduate</option>
+                            <option value="postgraduate">Postgraduate</option>
+                          </select>
+                        </div>
+                        <div className="form-group">
+                          <label>GPA (0-4.0):</label>
+                          <input
+                            type="number"
+                            step="0.1"
+                            min="0"
+                            max="4"
+                            value={applicationData.gpa}
+                            onChange={(e) => setApplicationData({...applicationData, gpa: e.target.value})}
+                            required
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label>Percentage (%):</label>
+                          <input
+                            type="number"
+                            min="0"
+                            max="100"
+                            value={applicationData.percentage}
+                            onChange={(e) => setApplicationData({...applicationData, percentage: e.target.value})}
+                            required
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label>10th Marks (%):</label>
+                          <input
+                            type="number"
+                            min="0"
+                            max="100"
+                            value={applicationData.tenthMarks}
+                            onChange={(e) => setApplicationData({...applicationData, tenthMarks: e.target.value})}
+                            required
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label>Intermediate Marks (%):</label>
+                          <input
+                            type="number"
+                            min="0"
+                            max="100"
+                            value={applicationData.interMarks}
+                            onChange={(e) => setApplicationData({...applicationData, interMarks: e.target.value})}
+                            required
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label>GATE Score:</label>
+                          <input
+                            type="number"
+                            min="0"
+                            max="100"
+                            value={applicationData.gateScore}
+                            onChange={(e) => setApplicationData({...applicationData, gateScore: e.target.value})}
+                            required
+                          />
+                        </div>
+                        <div className="form-actions">
+                          <button type="submit" className="submit-btn">Submit Application</button>
+                          <button type="button" onClick={() => setShowApplicationForm(null)} className="cancel-btn">Cancel</button>
+                        </div>
+                      </form>
+                    </div>
+                  )}
                 </div>
               );
             })}
