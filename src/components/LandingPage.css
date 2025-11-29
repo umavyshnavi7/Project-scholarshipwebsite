@@ -150,7 +150,7 @@
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+  background: linear-gradient(135deg, #c084fc 0%, #8b5cf6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -208,15 +208,15 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
   color: white;
   border: none;
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
 .btn-primary:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
 }
 
 .btn-primary:hover .btn-icon {
@@ -302,13 +302,13 @@
 }
 
 .stat-card {
-  background: white;
+  background: #fce7f3;
   padding: 3rem 2rem;
   border-radius: 20px;
   text-align: center;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #f9a8d4;
 }
 
 .stat-card:hover {
@@ -324,7 +324,7 @@
 .stat-number {
   font-size: 3rem;
   font-weight: 800;
-  color: #2d3748;
+  color: #7c3aed;
   margin-bottom: 0.5rem;
 }
 
@@ -337,7 +337,7 @@
 /* Features Section */
 .features-section {
   padding: 6rem 2rem;
-  background: white;
+  background: #fdf2f8;
 }
 
 .section-header {
@@ -348,7 +348,7 @@
 .section-header h2 {
   font-size: 3rem;
   font-weight: 700;
-  color: #2d3748;
+  color: #6d28d9;
   margin-bottom: 1rem;
 }
 
@@ -375,7 +375,7 @@
 }
 
 .feature-card:hover {
-  background: white;
+  background: #fce7f3;
   transform: translateY(-5px);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
 }
@@ -388,7 +388,7 @@
 .feature-card h3 {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #2d3748;
+  color: #7c3aed;
   margin-bottom: 1rem;
 }
 
@@ -411,7 +411,7 @@
 }
 
 .scholarship-preview-card {
-  background: white;
+  background: #fce7f3;
   padding: 2rem;
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.08);
@@ -424,7 +424,7 @@
 }
 
 .scholarship-preview-card h3 {
-  color: #2d3748;
+  color: #7c3aed;
   margin-bottom: 1rem;
   font-size: 1.3rem;
 }
@@ -446,7 +446,7 @@
 /* About Section */
 .about-section {
   padding: 6rem 2rem;
-  background: white;
+  background: #fdf2f8;
 }
 
 .about-content {
@@ -457,7 +457,7 @@
 
 .about-text h2 {
   font-size: 2.5rem;
-  color: #2d3748;
+  color: #6d28d9;
   margin-bottom: 1.5rem;
 }
 
