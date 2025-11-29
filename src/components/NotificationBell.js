@@ -1,46 +1,99 @@
-import React, { useState } from 'react';
-import './NotificationBell.css';
+import React, { useState, useRef, useEffect } from "react";
+import ReactDOM from "react-dom";
+import "./NotificationBell.css";
 
-const NotificationBell = ({ notifications = [] }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const unreadCount = notifications.filter(n => !n.read).length;
+function NotificationBell({ notifications = [] }) {
+  const [show, setShow] = useState(false);
+  const bellRef = useRef(null);
+  const [coords, setCoords] = useState({ top: 0, left: 0 });
+
+  // Calculate popup position whenever bell is clicked
+  const updatePosition = () => {
+    if (bellRef.current) {
+      const rect = bellRef.current.getBoundingClientRect();
+      setCoords({
+        top: rect.bottom + 8,   // 8px below bell
+        left: rect.left - 220 + rect.width, // align right edges
+      });
+    }
+  };
+
+  // Toggle popup + update coordinates
+  const togglePopup = () => {
+    if (!show) updatePosition();
+    setShow(!show);
+  };
+
+  // Update popup position on scroll or resize
+  useEffect(() => {
+    if (!show) return;
+
+    const handleScroll = () => updatePosition();
+    const handleResize = () => updatePosition();
+
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [show]);
+
+  // Click outside closes popup
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (
+        bellRef.current &&
+        !bellRef.current.contains(e.target)
+      ) {
+        setShow(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
 
   return (
-    <div className="notification-bell">
-      <button 
-        className="bell-button" 
-        onClick={() => setIsOpen(!isOpen)}
+    <>
+      <div
+        className="bell-anchor"
+        ref={bellRef}
+        onClick={togglePopup}
       >
-        🔔
-        {unreadCount > 0 && <span className="notification-count">{unreadCount}</span>}
-      </button>
-      
-      {isOpen && (
-        <div className="notification-dropdown">
-          <div className="notification-header">
-            <h4>Notifications</h4>
-          </div>
-          <div className="notification-list">
+        <span className="notification-bell">🔔</span>
+        {notifications.length > 0 && (
+          <span className="notif-count">{notifications.length}</span>
+        )}
+      </div>
+
+      {/* Popup rendered ABOVE EVERYTHING using portal */}
+      {show &&
+        ReactDOM.createPortal(
+          <div
+            className="notif-portal-popup"
+            style={{
+              top: coords.top,
+              left: coords.left,
+            }}
+          >
+            <h4 className="notif-title">Notifications</h4>
+
             {notifications.length === 0 ? (
-              <div className="no-notifications">No notifications</div>
+              <p className="empty-msg">No new notifications</p>
             ) : (
-              notifications.map(notification => (
-                <div 
-                  key={notification.id} 
-                  className={`notification-item ${!notification.read ? 'unread' : ''}`}
-                >
-                  <div className="notification-content">
-                    <p>{notification.message}</p>
-                    <span className="notification-time">{notification.time}</span>
-                  </div>
+              notifications.map((n) => (
+                <div key={n.id} className="notif-item">
+                  <p>{n.message}</p>
+                  {n.time && <span className="notif-time">{n.time}</span>}
                 </div>
               ))
             )}
-          </div>
-        </div>
-      )}
-    </div>
+          </div>,
+          document.body
+        )}
+    </>
   );
-};
+}
 
 export default NotificationBell;
