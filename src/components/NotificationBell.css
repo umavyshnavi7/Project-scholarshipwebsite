@@ -1,7 +1,5 @@
-.bell-anchor {
+.notification-bell {
   position: relative;
-<<<<<<< HEAD
-=======
   z-index: 999999;
 }
 
@@ -20,17 +18,13 @@
   background: none;
   border: none;
   font-size: 1.5rem;
->>>>>>> 942e5688be96ee1b7c47648cc9768fc27886a6ac
   cursor: pointer;
   display: flex;
   align-items: center;
+  position: relative;
 }
 
-.notification-bell {
-  font-size: 22px;
-}
-
-.notif-count {
+.notification-count {
   position: absolute;
   top: -6px;
   right: -6px;
@@ -45,30 +39,12 @@
   justify-content: center;
 }
 
-/* POPUP ABOVE EVERYTHING */
-.notif-portal-popup {
+.notification-dropdown {
   position: absolute;
-  width: 260px;
+  top: 100%;
+  right: 0;
   background: white;
   border-radius: 12px;
-  padding: 12px;
-  z-index: 999999999 !important; /* MAX LAYER */
-  box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.22);
-}
-
-.notif-item {
-  background: #f5f6f9;
-  padding: 10px;
-  margin-bottom: 8px;
-  border-radius: 8px;
-<<<<<<< HEAD
-}
-
-.notif-time {
-  font-size: 12px;
-  color: #777;
-}
-=======
   box-shadow: 0 8px 32px rgba(0,0,0,0.25);
   width: 320px;
   max-height: 400px;
@@ -174,10 +150,10 @@
   color: #718096;
 }
 
-.no-notifications {
+.empty-msg {
   padding: 2rem;
   text-align: center;
   color: #718096;
   font-style: italic;
+  margin: 0;
 }
->>>>>>> 942e5688be96ee1b7c47648cc9768fc27886a6ac
