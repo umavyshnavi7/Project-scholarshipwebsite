@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useFormValidation } from '../hooks/useFormValidation';
 import { required, email, minLength, matchField } from '../utils/validationRules';
+import Captcha from '../components/Captcha';
 import './Auth.css';
 
 function SignUp() {
+  const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
   const navigate = useNavigate();
   const { register } = useAuth();
   
@@ -44,6 +46,10 @@ function SignUp() {
     e.preventDefault();
     
     if (!validateAll()) {
+      return;
+    }
+    
+    if (!isCaptchaVerified) {
       return;
     }
 
@@ -137,6 +143,8 @@ function SignUp() {
               </button>
             </div>
           </div>
+
+          <Captcha onVerify={setIsCaptchaVerified} />
 
           <button type="submit" className="auth-submit-btn">
             Sign Up

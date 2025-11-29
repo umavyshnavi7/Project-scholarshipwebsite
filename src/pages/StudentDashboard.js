@@ -3,14 +3,13 @@ import { useApp } from '../contexts/AppContext';
 import { useAuth } from '../hooks/useAuth';
 import NotificationBell from '../components/NotificationBell';
 import QuickActions from '../components/QuickActions';
-import { useToast } from '../components/ToastNotification';
 import './StudentDashboard.css';
 
 function StudentDashboard() {
   const { state } = useApp();
   const { user, notifications } = state;
   const { logout } = useAuth();
-  const { addToast, ToastContainer } = useToast();
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [showProfile, setShowProfile] = useState(false);
@@ -118,18 +117,12 @@ function StudentDashboard() {
         });
         if (urgentScholarships.length > 0) {
           setSearchTerm(urgentScholarships[0].title.split(' ')[0]);
-          addToast(`Found ${urgentScholarships.length} scholarships with upcoming deadlines!`, 'warning');
-        } else {
-          addToast('No urgent deadlines found. Great job staying on top of things!', 'success');
         }
         break;
       case 'tips':
         // Show application tips modal or expand profile completion
         if (profileProgress < 100) {
           setShowProfile(true);
-          addToast('Complete your profile first - it increases your chances by 40%!', 'info', 5000);
-        } else {
-          addToast('Pro tip: Apply to 5-10 scholarships monthly for best results. Quality over quantity!', 'info', 6000);
         }
         break;
       default:
@@ -143,7 +136,7 @@ function StudentDashboard() {
     // Validate all fields are filled
     if (!applicationData.gpa || !applicationData.percentage || !applicationData.gateScore || 
         !applicationData.tenthMarks || !applicationData.interMarks) {
-      addToast('Please fill in all required fields', 'warning');
+      alert('Please fill in all required fields');
       return;
     }
     
@@ -166,7 +159,7 @@ function StudentDashboard() {
     setApplications([...applications, newApplication]);
     setApplicationData({ educationLevel: 'undergraduate', gpa: '', percentage: '', gateScore: '', tenthMarks: '', interMarks: '' });
     setShowApplicationForm(null);
-    addToast(`Successfully applied for ${scholarship.title}! 🎉`, 'success');
+    alert(`Successfully applied for ${scholarship.title}! 🎉`);
   };
 
   // Filter scholarships based on search and category
@@ -201,7 +194,6 @@ function StudentDashboard() {
       setProfileProgress(prev => {
         const newProgress = Math.min(100, prev + Math.random() * 2);
         if (newProgress === 100 && prev < 100 && !hasShownProfileComplete) {
-          addToast('Profile completed! You\'re now eligible for more scholarships! 🌟', 'success');
           setHasShownProfileComplete(true);
         }
         return newProgress;
@@ -211,7 +203,6 @@ function StudentDashboard() {
     // Welcome message (only once)
     if (!hasShownWelcome) {
       setTimeout(() => {
-        addToast(`Welcome back, ${user?.name || 'Student'}! 👋`, 'info');
         setHasShownWelcome(true);
       }, 1000);
     }
@@ -219,23 +210,22 @@ function StudentDashboard() {
     // Deadline reminders (only once)
     if (nearestDeadline && nearestDeadline.days <= 7 && !hasShownDeadlineReminder) {
       setTimeout(() => {
-        addToast(`Reminder: ${nearestDeadline.title} deadline in ${nearestDeadline.days} days! ⏰`, 'warning');
         setHasShownDeadlineReminder(true);
       }, 3000);
     }
 
     return () => clearInterval(interval);
-  }, [addToast, user?.name, nearestDeadline]);
+  }, [user?.name, nearestDeadline]);
 
   return (
     <div className="student-dashboard">
-      <ToastContainer />
+
       <header className="student-header">
         <div className="header-left">
           <h1>Scholarship Management - Student Portal</h1>
         </div>
         <div className="header-right">
-          <NotificationBell notifications={notifications} />
+          <NotificationBell />
           <span>Welcome, {user?.name}</span>
           <button className="logout-btn" onClick={logout}>Logout</button>
         </div>
@@ -257,9 +247,9 @@ function StudentDashboard() {
         <div className="stat-card animated-card clickable" onClick={() => {
           const approvedApps = applications.filter(app => app.status === 'approved');
           if (approvedApps.length > 0) {
-            addToast(`You have ${approvedApps.length} approved applications!`, 'success');
+            alert(`You have ${approvedApps.length} approved applications!`);
           } else {
-            addToast('No approved applications yet. Keep applying!', 'info');
+            alert('No approved applications yet. Keep applying!');
           }
         }}>
           <div className="stat-header">
@@ -278,9 +268,9 @@ function StudentDashboard() {
           if (stats.totalAwarded > 0) {
             const approvedApps = applications.filter(app => app.status === 'approved');
             const details = approvedApps.map(app => `${app.scholarship}: $${app.amount}`).join(', ');
-            addToast(`Awarded scholarships: ${details}`, 'success', 8000);
+            alert(`Awarded scholarships: ${details}`);
           } else {
-            addToast('No awards yet. Keep applying to increase your chances!', 'info');
+            alert('No awards yet. Keep applying to increase your chances!');
           }
         }}>
           <div className="stat-header">
@@ -298,13 +288,12 @@ function StudentDashboard() {
               const hasApplied = applications.some(app => app.scholarship === scholarship.title);
               if (!hasApplied) {
                 applyForScholarship(scholarship.id);
-                addToast('Quick apply opened for urgent deadline!', 'warning');
               } else {
-                addToast('You already applied to this scholarship!', 'info');
+                alert('You already applied to this scholarship!');
               }
             }
           } else {
-            addToast('No urgent deadlines. Browse more scholarships!', 'info');
+            alert('No urgent deadlines. Browse more scholarships!');
           }
         }}>
           <div className="stat-header">
@@ -422,7 +411,6 @@ function StudentDashboard() {
                     onClick={() => {
                       if (!hasApplied) {
                         applyForScholarship(scholarship.id);
-                        addToast('Application form opened! Fill in your details below. 📝', 'info');
                       }
                     }}
                     disabled={hasApplied}

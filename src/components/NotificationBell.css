@@ -1,5 +1,17 @@
 .notification-bell {
   position: relative;
+  z-index: 999999;
+}
+
+.notification-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 999998;
+  pointer-events: none;
 }
 
 .bell-button {
@@ -39,24 +51,56 @@
   right: 0;
   background: white;
   border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-  width: 300px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  width: 320px;
   max-height: 400px;
   overflow: hidden;
-  z-index: 1000;
+  z-index: 999999;
   border: 1px solid #e2e8f0;
+  margin-top: 0.5rem;
+  animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform-origin: top right;
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .notification-header {
   padding: 1rem;
   border-bottom: 1px solid #e2e8f0;
   background: #f8f9fa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .notification-header h4 {
   margin: 0;
   color: #2d3748;
   font-size: 1rem;
+}
+
+.mark-all-read {
+  background: none;
+  border: none;
+  color: #667eea;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.mark-all-read:hover {
+  background: rgba(102, 126, 234, 0.1);
 }
 
 .notification-list {
@@ -68,6 +112,11 @@
   padding: 1rem;
   border-bottom: 1px solid #f1f3f4;
   transition: background 0.2s ease;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .notification-item:hover {
@@ -77,6 +126,22 @@
 .notification-item.unread {
   background: #e6f3ff;
   border-left: 3px solid #667eea;
+}
+
+.notification-item.unread:hover {
+  background: #dbeafe;
+}
+
+.unread-dot {
+  width: 8px;
+  height: 8px;
+  background: #667eea;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.notification-content {
+  flex: 1;
 }
 
 .notification-content p {

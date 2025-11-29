@@ -56,6 +56,23 @@ function appReducer(state, action) {
         ...state,
         notifications: action.payload
       };
+    case 'MARK_NOTIFICATION_READ':
+      return {
+        ...state,
+        notifications: state.notifications.map(notification =>
+          notification.id === action.payload
+            ? { ...notification, read: true }
+            : notification
+        )
+      };
+    case 'MARK_ALL_NOTIFICATIONS_READ':
+      return {
+        ...state,
+        notifications: state.notifications.map(notification => ({
+          ...notification,
+          read: true
+        }))
+      };
     default:
       return state;
   }
