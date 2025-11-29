@@ -1,0 +1,140 @@
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.toast-notification {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  min-width: 300px;
+  max-width: 400px;
+  overflow: hidden;
+  transform: translateX(400px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: auto;
+  border-left: 4px solid #667eea;
+}
+
+.toast-notification.show {
+  transform: translateX(0);
+}
+
+.toast-notification.exit {
+  transform: translateX(400px);
+  opacity: 0;
+}
+
+.toast-notification.success {
+  border-left-color: #4CAF50;
+}
+
+.toast-notification.error {
+  border-left-color: #f44336;
+}
+
+.toast-notification.warning {
+  border-left-color: #ff9800;
+}
+
+.toast-notification.info {
+  border-left-color: #2196f3;
+}
+
+.toast-content {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  gap: 12px;
+}
+
+.toast-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.toast-message {
+  flex: 1;
+  font-size: 0.9rem;
+  color: #333;
+  line-height: 1.4;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #666;
+  cursor: pointer;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.toast-close:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.toast-progress {
+  height: 3px;
+  background: #f0f0f0;
+  overflow: hidden;
+}
+
+.toast-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  width: 100%;
+  transform-origin: left;
+  animation: progressShrink linear;
+}
+
+@keyframes progressShrink {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+.toast-notification.success .toast-progress-bar {
+  background: linear-gradient(90deg, #4CAF50, #45a049);
+}
+
+.toast-notification.error .toast-progress-bar {
+  background: linear-gradient(90deg, #f44336, #d32f2f);
+}
+
+.toast-notification.warning .toast-progress-bar {
+  background: linear-gradient(90deg, #ff9800, #f57c00);
+}
+
+.toast-notification.info .toast-progress-bar {
+  background: linear-gradient(90deg, #2196f3, #1976d2);
+}
+
+@media (max-width: 768px) {
+  .toast-container {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+  }
+  
+  .toast-notification {
+    min-width: auto;
+    max-width: none;
+  }
+}
