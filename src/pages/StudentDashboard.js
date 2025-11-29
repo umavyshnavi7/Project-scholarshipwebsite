@@ -502,6 +502,65 @@ function StudentDashboard() {
           </div>
         </section>
 
+        <section className="documents-section">
+          <h2>Document Management</h2>
+          <div className="documents-grid">
+            <div className="document-upload-card">
+              <h3>Upload Documents</h3>
+              <div className="upload-area">
+                <input type="file" id="transcript" accept=".pdf,.jpg,.png" />
+                <label htmlFor="transcript" className="upload-label">
+                  📄 Academic Transcript
+                  <span>PDF, JPG, PNG (Max 5MB)</span>
+                </label>
+              </div>
+              <div className="upload-area">
+                <input type="file" id="certificate" accept=".pdf,.jpg,.png" />
+                <label htmlFor="certificate" className="upload-label">
+                  🏆 Certificates
+                  <span>PDF, JPG, PNG (Max 5MB)</span>
+                </label>
+              </div>
+              <div className="upload-area">
+                <input type="file" id="identity" accept=".pdf,.jpg,.png" />
+                <label htmlFor="identity" className="upload-label">
+                  🆔 Identity Proof
+                  <span>PDF, JPG, PNG (Max 5MB)</span>
+                </label>
+              </div>
+              <div className="upload-area">
+                <input type="file" id="income" accept=".pdf,.jpg,.png" />
+                <label htmlFor="income" className="upload-label">
+                  💰 Income Certificate
+                  <span>PDF, JPG, PNG (Max 5MB)</span>
+                </label>
+              </div>
+            </div>
+            
+            <div className="uploaded-documents">
+              <h3>Uploaded Documents</h3>
+              <div className="document-list">
+                <div className="document-item">
+                  <span className="doc-icon">📄</span>
+                  <div className="doc-info">
+                    <span className="doc-name">Academic_Transcript.pdf</span>
+                    <span className="doc-date">Uploaded: 2025-01-15</span>
+                  </div>
+                  <span className="doc-status verified">✓ Verified</span>
+                </div>
+                <div className="document-item">
+                  <span className="doc-icon">🏆</span>
+                  <div className="doc-info">
+                    <span className="doc-name">Merit_Certificate.pdf</span>
+                    <span className="doc-date">Uploaded: 2025-01-14</span>
+                  </div>
+                  <span className="doc-status pending">⏳ Pending</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="applications-section">
           <h2>My Applications</h2>
           <div className="applications-list">
