@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../contexts/AppContext';
 import { useAuth } from '../hooks/useAuth';
 import NotificationBell from '../components/NotificationBell';
+import QuickActions from '../components/QuickActions';
+import { useToast } from '../components/ToastNotification';
 import './StudentDashboard.css';
 
 function StudentDashboard() {
   const { state } = useApp();
   const { user, notifications } = state;
   const { logout } = useAuth();
+  const { addToast, ToastContainer } = useToast();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All Categories');
+  const [showProfile, setShowProfile] = useState(false);
+  const [profileProgress, setProfileProgress] = useState(75);
+  const [hasShownWelcome, setHasShownWelcome] = useState(false);
+  const [hasShownDeadlineReminder, setHasShownDeadlineReminder] = useState(false);
+  const [hasShownProfileComplete, setHasShownProfileComplete] = useState(false);
   const [applications, setApplications] = useState([
     {
       id: 1,
@@ -33,7 +43,9 @@ function StudentDashboard() {
       amount: 4000,
       deadline: "2025-12-15",
       category: "Sports",
-      status: "open"
+      status: "open",
+      eligibility: "GPA 3.5+, Sports participation",
+      applicants: 45
     },
     {
       id: 2,
@@ -42,7 +54,31 @@ function StudentDashboard() {
       amount: 3500,
       deadline: "2026-01-30",
       category: "Sports",
-      status: "open"
+      status: "open",
+      eligibility: "Leadership experience required",
+      applicants: 32
+    },
+    {
+      id: 3,
+      title: "STEM Innovation Award",
+      description: "For students pursuing Science, Technology, Engineering, or Mathematics degrees.",
+      amount: 6000,
+      deadline: "2025-11-20",
+      category: "STEM",
+      status: "open",
+      eligibility: "STEM major, GPA 3.7+",
+      applicants: 78
+    },
+    {
+      id: 4,
+      title: "Community Service Excellence",
+      description: "Recognizing students who make significant contributions to their communities.",
+      amount: 2500,
+      deadline: "2026-02-10",
+      category: "Community Service",
+      status: "open",
+      eligibility: "100+ volunteer hours",
+      applicants: 23
     }
   ]);
 
@@ -60,13 +96,54 @@ function StudentDashboard() {
     setShowApplicationForm(scholarshipId);
   };
 
+  const handleQuickAction = (actionId) => {
+    switch (actionId) {
+      case 'search':
+        const searchInput = document.querySelector('.search-bar input');
+        if (searchInput) {
+          searchInput.focus();
+          searchInput.value = '';
+          setSearchTerm('');
+          setSelectedCategory('All Categories');
+        }
+        break;
+      case 'profile':
+        setShowProfile(!showProfile);
+        break;
+      case 'deadlines':
+        // Filter to show only scholarships with deadlines within 30 days
+        const urgentScholarships = availableScholarships.filter(s => {
+          const daysLeft = Math.ceil((new Date(s.deadline) - new Date()) / (1000 * 60 * 60 * 24));
+          return daysLeft <= 30 && daysLeft > 0;
+        });
+        if (urgentScholarships.length > 0) {
+          setSearchTerm(urgentScholarships[0].title.split(' ')[0]);
+          addToast(`Found ${urgentScholarships.length} scholarships with upcoming deadlines!`, 'warning');
+        } else {
+          addToast('No urgent deadlines found. Great job staying on top of things!', 'success');
+        }
+        break;
+      case 'tips':
+        // Show application tips modal or expand profile completion
+        if (profileProgress < 100) {
+          setShowProfile(true);
+          addToast('Complete your profile first - it increases your chances by 40%!', 'info', 5000);
+        } else {
+          addToast('Pro tip: Apply to 5-10 scholarships monthly for best results. Quality over quantity!', 'info', 6000);
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
   const submitApplication = (e) => {
     e.preventDefault();
     
     // Validate all fields are filled
     if (!applicationData.gpa || !applicationData.percentage || !applicationData.gateScore || 
         !applicationData.tenthMarks || !applicationData.interMarks) {
-      alert('Please fill in all required fields');
+      addToast('Please fill in all required fields', 'warning');
       return;
     }
     
@@ -89,18 +166,70 @@ function StudentDashboard() {
     setApplications([...applications, newApplication]);
     setApplicationData({ educationLevel: 'undergraduate', gpa: '', percentage: '', gateScore: '', tenthMarks: '', interMarks: '' });
     setShowApplicationForm(null);
-    alert(`Applied for ${scholarship.title} successfully!`);
+    addToast(`Successfully applied for ${scholarship.title}! 🎉`, 'success');
   };
+
+  // Filter scholarships based on search and category
+  const filteredScholarships = availableScholarships.filter(scholarship => {
+    const matchesSearch = scholarship.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         scholarship.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'All Categories' || scholarship.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   const stats = {
     totalApplications: applications.length,
     approved: applications.filter(app => app.status === 'approved').length,
+    pending: applications.filter(app => app.status === 'pending').length,
     totalAwarded: applications.filter(app => app.status === 'approved')
       .reduce((sum, app) => sum + app.amount, 0)
   };
 
+  // Calculate days until nearest deadline
+  const nearestDeadline = availableScholarships
+    .map(s => ({ 
+      title: s.title, 
+      days: Math.max(0, Math.ceil((new Date(s.deadline) - new Date()) / (1000 * 60 * 60 * 24)))
+    }))
+    .filter(s => s.days >= 0)
+    .sort((a, b) => a.days - b.days)[0];
+
+  useEffect(() => {
+    // Simulate real-time updates
+    const interval = setInterval(() => {
+      // Update profile progress randomly
+      setProfileProgress(prev => {
+        const newProgress = Math.min(100, prev + Math.random() * 2);
+        if (newProgress === 100 && prev < 100 && !hasShownProfileComplete) {
+          addToast('Profile completed! You\'re now eligible for more scholarships! 🌟', 'success');
+          setHasShownProfileComplete(true);
+        }
+        return newProgress;
+      });
+    }, 5000);
+
+    // Welcome message (only once)
+    if (!hasShownWelcome) {
+      setTimeout(() => {
+        addToast(`Welcome back, ${user?.name || 'Student'}! 👋`, 'info');
+        setHasShownWelcome(true);
+      }, 1000);
+    }
+
+    // Deadline reminders (only once)
+    if (nearestDeadline && nearestDeadline.days <= 7 && !hasShownDeadlineReminder) {
+      setTimeout(() => {
+        addToast(`Reminder: ${nearestDeadline.title} deadline in ${nearestDeadline.days} days! ⏰`, 'warning');
+        setHasShownDeadlineReminder(true);
+      }, 3000);
+    }
+
+    return () => clearInterval(interval);
+  }, [addToast, user?.name, nearestDeadline]);
+
   return (
     <div className="student-dashboard">
+      <ToastContainer />
       <header className="student-header">
         <div className="header-left">
           <h1>Scholarship Management - Student Portal</h1>
@@ -113,26 +242,135 @@ function StudentDashboard() {
       </header>
 
       <div className="stats-grid">
-        <div className="stat-card">
-          <h3>Total Applications</h3>
+        <div className="stat-card animated-card clickable" onClick={() => {
+          const applicationsSection = document.querySelector('.applications-section');
+          if (applicationsSection) applicationsSection.scrollIntoView({ behavior: 'smooth' });
+        }}>
+          <div className="stat-header">
+            <h3>Total Applications</h3>
+            <div className="stat-badge">{stats.pending} pending</div>
+          </div>
           <div className="stat-number">{stats.totalApplications}</div>
+          <div className="stat-action">View All →</div>
         </div>
-        <div className="stat-card">
-          <h3>Approved</h3>
+        
+        <div className="stat-card animated-card clickable" onClick={() => {
+          const approvedApps = applications.filter(app => app.status === 'approved');
+          if (approvedApps.length > 0) {
+            addToast(`You have ${approvedApps.length} approved applications!`, 'success');
+          } else {
+            addToast('No approved applications yet. Keep applying!', 'info');
+          }
+        }}>
+          <div className="stat-header">
+            <h3>Approved</h3>
+            <div className="success-rate">{stats.totalApplications > 0 ? Math.round((stats.approved / stats.totalApplications) * 100) : 0}% rate</div>
+          </div>
           <div className="stat-number">{stats.approved}</div>
+          <div className="stat-progress">
+            <div className="progress-bar">
+              <div className="progress-fill" style={{width: `${(stats.approved / Math.max(stats.totalApplications, 1)) * 100}%`}}></div>
+            </div>
+          </div>
         </div>
-        <div className="stat-card">
-          <h3>Total Awarded</h3>
+        
+        <div className="stat-card animated-card clickable" onClick={() => {
+          if (stats.totalAwarded > 0) {
+            const approvedApps = applications.filter(app => app.status === 'approved');
+            const details = approvedApps.map(app => `${app.scholarship}: $${app.amount}`).join(', ');
+            addToast(`Awarded scholarships: ${details}`, 'success', 8000);
+          } else {
+            addToast('No awards yet. Keep applying to increase your chances!', 'info');
+          }
+        }}>
+          <div className="stat-header">
+            <h3>Total Awarded</h3>
+            <div className="award-count">{applications.filter(app => app.status === 'approved').length} awards</div>
+          </div>
           <div className="stat-number">${stats.totalAwarded.toLocaleString()}</div>
+          <div className="stat-action">View Details →</div>
         </div>
+        
+        <div className="stat-card animated-card deadline-card clickable" onClick={() => {
+          if (nearestDeadline) {
+            const scholarship = availableScholarships.find(s => s.title === nearestDeadline.title);
+            if (scholarship) {
+              const hasApplied = applications.some(app => app.scholarship === scholarship.title);
+              if (!hasApplied) {
+                applyForScholarship(scholarship.id);
+                addToast('Quick apply opened for urgent deadline!', 'warning');
+              } else {
+                addToast('You already applied to this scholarship!', 'info');
+              }
+            }
+          } else {
+            addToast('No urgent deadlines. Browse more scholarships!', 'info');
+          }
+        }}>
+          <div className="stat-header">
+            <h3>Next Deadline</h3>
+            <div className="urgency-badge">{nearestDeadline && nearestDeadline.days <= 7 ? 'URGENT' : 'UPCOMING'}</div>
+          </div>
+          <div className="stat-number">{nearestDeadline ? nearestDeadline.days : 0}<span className="days-label">days</span></div>
+          <div className="stat-trend">{nearestDeadline ? nearestDeadline.title.substring(0, 25) : 'No upcoming deadlines'}</div>
+        </div>
+      </div>
+
+      {/* Quick Actions Widget */}
+      <QuickActions onAction={handleQuickAction} />
+
+      {/* Profile Completion Widget */}
+      <div className="profile-widget">
+        <div className="profile-header" onClick={() => setShowProfile(!showProfile)}>
+          <div className="profile-info">
+            <h3>Profile Completion</h3>
+            <span className="profile-percentage">{Math.round(profileProgress)}%</span>
+          </div>
+          <div className="profile-progress-circle">
+            <svg width="60" height="60">
+              <circle cx="30" cy="30" r="25" fill="none" stroke="#e1e5e9" strokeWidth="4"/>
+              <circle 
+                cx="30" cy="30" r="25" fill="none" 
+                stroke="#667eea" strokeWidth="4"
+                strokeDasharray={`${2 * Math.PI * 25}`}
+                strokeDashoffset={`${2 * Math.PI * 25 * (1 - profileProgress / 100)}`}
+                transform="rotate(-90 30 30)"
+              />
+            </svg>
+          </div>
+        </div>
+        {showProfile && (
+          <div className="profile-details">
+            <div className="profile-item completed">
+              <span>✅ Basic Information</span>
+            </div>
+            <div className="profile-item completed">
+              <span>✅ Academic Records</span>
+            </div>
+            <div className="profile-item pending">
+              <span>⏳ Upload Documents</span>
+            </div>
+            <div className="profile-item pending">
+              <span>⏳ Add References</span>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="student-content">
         <section className="browse-section">
           <h2>Browse Scholarships</h2>
           <div className="search-bar">
-            <input type="text" placeholder="Search scholarships..." />
-            <select>
+            <div className="search-input-wrapper">
+              <input 
+                type="text" 
+                placeholder="Search scholarships..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <span className="search-icon">🔍</span>
+            </div>
+            <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
               <option>All Categories</option>
               <option>Academic</option>
               <option>STEM</option>
@@ -141,29 +379,55 @@ function StudentDashboard() {
               <option>Community Service</option>
               <option>Leadership</option>
             </select>
+            <div className="results-count">
+              {filteredScholarships.length} scholarships found
+            </div>
           </div>
 
           <div className="scholarships-grid">
-            {availableScholarships.map(scholarship => {
+            {filteredScholarships.map(scholarship => {
               const hasApplied = applications.some(app => app.scholarship === scholarship.title);
               
               return (
-                <div key={scholarship.id} className="scholarship-card">
-                  <h4>{scholarship.title}</h4>
+                <div key={scholarship.id} className="scholarship-card interactive-card">
+                  <div className="card-header">
+                    <h4>{scholarship.title}</h4>
+                    <div className="applicant-count">{scholarship.applicants} applicants</div>
+                  </div>
                   <p>{scholarship.description}</p>
+                  <div className="eligibility-info">
+                    <strong>Eligibility:</strong> {scholarship.eligibility}
+                  </div>
                   <div className="scholarship-details">
                     <span className="amount">${scholarship.amount.toLocaleString()}</span>
                     <span className="deadline">Deadline: {scholarship.deadline}</span>
-                    <span className={`category ${scholarship.category.toLowerCase()}`}>
+                    <span className={`category ${scholarship.category.toLowerCase().replace(' ', '-')}`}>
                       {scholarship.category}
                     </span>
                   </div>
+                  <div className="competition-meter">
+                    <div className="meter-label">Competition Level</div>
+                    <div className="meter-bar">
+                      <div 
+                        className="meter-fill" 
+                        style={{width: `${Math.min((scholarship.applicants / 100) * 100, 100)}%`}}
+                      ></div>
+                    </div>
+                    <div className="meter-text">
+                      {scholarship.applicants < 30 ? 'Low' : scholarship.applicants < 60 ? 'Medium' : 'High'}
+                    </div>
+                  </div>
                   <button
                     className={`apply-btn ${hasApplied ? 'applied' : ''}`}
-                    onClick={() => applyForScholarship(scholarship.id)}
+                    onClick={() => {
+                      if (!hasApplied) {
+                        applyForScholarship(scholarship.id);
+                        addToast('Application form opened! Fill in your details below. 📝', 'info');
+                      }
+                    }}
                     disabled={hasApplied}
                   >
-                    {hasApplied ? 'Applied' : 'Apply Now'}
+                    {hasApplied ? '✓ Applied' : 'Apply Now'}
                   </button>
                   
                   {showApplicationForm === scholarship.id && (
