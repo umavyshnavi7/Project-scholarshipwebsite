@@ -210,6 +210,42 @@ function LandingPage() {
         </div>
       </section>
 
+      {/* Student Info Section */}
+      <section className="student-info-section">
+        <div className="container">
+          <div className="student-info-content">
+            <div className="info-card">
+              <div className="info-icon">👤</div>
+              <h3>Student Information</h3>
+              <p>Complete your profile to get personalized scholarship recommendations</p>
+              <button 
+                className="btn btn-violet"
+                onClick={() => navigate('/signup')}
+              >
+                <span className="btn-content">
+                  <span className="btn-text">Update Profile</span>
+                  <span className="btn-icon">✏️</span>
+                </span>
+              </button>
+            </div>
+            <div className="info-card">
+              <div className="info-icon">🎯</div>
+              <h3>Create Account</h3>
+              <p>Join our platform and start your scholarship journey today</p>
+              <button 
+                className="btn btn-violet"
+                onClick={() => navigate('/signup')}
+              >
+                <span className="btn-content">
+                  <span className="btn-text">Get Started</span>
+                  <span className="btn-icon">🚀</span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="cta-section">
         <div className="container">

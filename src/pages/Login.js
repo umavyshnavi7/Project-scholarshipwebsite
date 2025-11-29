@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import Captcha from '../components/Captcha';
 import './Login.css';
 
 function Login() {
@@ -8,6 +9,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('student');
   const [error, setError] = useState('');
+  const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
   const navigate = useNavigate();
   const { authenticate } = useAuth();
 
@@ -22,6 +24,11 @@ function Login() {
     
     if (password.length < 6) {
       setError('Password must be at least 6 characters long');
+      return;
+    }
+    
+    if (!isCaptchaVerified) {
+      setError('Please verify CAPTCHA');
       return;
     }
     
@@ -80,6 +87,8 @@ function Login() {
               </button>
             </div>
           </div>
+
+          <Captcha onVerify={setIsCaptchaVerified} />
 
           <button type="submit" className="login-submit-btn">
             Login
