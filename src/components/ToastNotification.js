@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom/client';
 import './ToastNotification.css';
 
 const ToastNotification = ({ message, type = 'info', duration = 4000, onClose }) => {
@@ -69,19 +70,45 @@ export const useToast = () => {
     setToasts(prev => prev.filter(toast => toast.id !== id));
   };
 
-  const ToastContainer = () => (
-    <div className="toast-container">
-      {toasts.map(toast => (
-        <ToastNotification
-          key={toast.id}
-          message={toast.message}
-          type={toast.type}
-          duration={toast.duration}
-          onClose={() => removeToast(toast.id)}
-        />
-      ))}
-    </div>
-  );
+  useEffect(() => {
+    let container = document.getElementById('toast-root');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'toast-root';
+      container.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 999999; pointer-events: none;';
+      document.body.appendChild(container);
+    }
+    
+    return () => {
+      if (container && toasts.length === 0) {
+        document.body.removeChild(container);
+      }
+    };
+  }, [toasts]);
+
+  const ToastContainer = () => {
+    useEffect(() => {
+      const container = document.getElementById('toast-root');
+      if (container) {
+        const root = ReactDOM.createRoot(container);
+        root.render(
+          <div className="toast-container">
+            {toasts.map(toast => (
+              <ToastNotification
+                key={toast.id}
+                message={toast.message}
+                type={toast.type}
+                duration={toast.duration}
+                onClose={() => removeToast(toast.id)}
+              />
+            ))}
+          </div>
+        );
+      }
+    }, [toasts]);
+    
+    return null;
+  };
 
   return { addToast, ToastContainer };
 };
