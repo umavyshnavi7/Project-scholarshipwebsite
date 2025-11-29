@@ -22,6 +22,7 @@ function AdminDashboard() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingScholarship, setEditingScholarship] = useState(null);
   const [expandedApp, setExpandedApp] = useState(null);
+  const [viewingDocument, setViewingDocument] = useState(null);
   const [newScholarship, setNewScholarship] = useState({
     title: '',
     description: '',
@@ -538,7 +539,149 @@ function AdminDashboard() {
             </table>
           </AnimatedCard>
         </section>
+
+        <section className="documents-verification-section">
+          <div className="section-header">
+            <h2>Document Verification</h2>
+            <div className="verification-stats">
+              <span className="stat-item">Pending: 8</span>
+              <span className="stat-item">Verified: 15</span>
+            </div>
+          </div>
+          
+          <div className="documents-grid">
+            <div className="document-verification-card">
+              <div className="student-header">
+                <h4>John Smith (ID: 10234)</h4>
+                <span className="application-id">Application #A001</span>
+              </div>
+              
+              <div className="documents-list">
+                <div className="doc-item">
+                  <span className="doc-icon">📄</span>
+                  <div className="doc-details">
+                    <span className="doc-name">Academic_Transcript.pdf</span>
+                    <span className="doc-date">Uploaded: 2025-01-15</span>
+                  </div>
+                  <div className="doc-actions">
+                    <button className="btn-view" onClick={() => setViewingDocument({name: 'Academic_Transcript.pdf', url: 'data:application/pdf;base64,JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKPD4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovQ29udGVudHMgNCAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0xlbmd0aCA0NAo+PgpzdHJlYW0KQlQKL0YxIDEyIFRmCjEwMCA3MDAgVGQKKFNhbXBsZSBBY2FkZW1pYyBUcmFuc2NyaXB0KSBUagpFVAplbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCA1CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAwOSAwMDAwMCBuIAowMDAwMDAwMDU4IDAwMDAwIG4gCjAwMDAwMDAxMTUgMDAwMDAgbiAKMDAwMDAwMDIwNCAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDUKL1Jvb3QgMSAwIFIKPj4Kc3RhcnR4cmVmCjI5OAolJUVPRg=='})}>View</button>
+                    <button className="btn-verify">Verify</button>
+                    <button className="btn-reject-doc">Reject</button>
+                  </div>
+                </div>
+                
+                <div className="doc-item">
+                  <span className="doc-icon">🏆</span>
+                  <div className="doc-details">
+                    <span className="doc-name">Merit_Certificate.pdf</span>
+                    <span className="doc-date">Uploaded: 2025-01-14</span>
+                  </div>
+                  <div className="doc-actions">
+                    <button className="btn-view" onClick={() => setViewingDocument({name: 'Merit_Certificate.pdf', url: 'data:application/pdf;base64,JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKPD4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovQ29udGVudHMgNCAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0xlbmd0aCA0MAo+PgpzdHJlYW0KQlQKL0YxIDEyIFRmCjEwMCA3MDAgVGQKKE1lcml0IENlcnRpZmljYXRlKSBUagpFVAplbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCA1CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAwOSAwMDAwMCBuIAowMDAwMDAwMDU4IDAwMDAwIG4gCjAwMDAwMDAxMTUgMDAwMDAgbiAKMDAwMDAwMDIwNCAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDUKL1Jvb3QgMSAwIFIKPj4Kc3RhcnR4cmVmCjI5NAolJUVPRg=='})}>View</button>
+                    <button className="btn-verify">Verify</button>
+                    <button className="btn-reject-doc">Reject</button>
+                  </div>
+                </div>
+                
+                <div className="doc-item verified">
+                  <span className="doc-icon">🆔</span>
+                  <div className="doc-details">
+                    <span className="doc-name">Identity_Proof.pdf</span>
+                    <span className="doc-date">Uploaded: 2025-01-13</span>
+                  </div>
+                  <span className="doc-status verified">✓ Verified</span>
+                </div>
+                
+                <div className="doc-item">
+                  <span className="doc-icon">💰</span>
+                  <div className="doc-details">
+                    <span className="doc-name">Income_Certificate.pdf</span>
+                    <span className="doc-date">Uploaded: 2025-01-12</span>
+                  </div>
+                  <div className="doc-actions">
+                    <button className="btn-view" onClick={() => setViewingDocument({name: 'Income_Certificate.pdf', url: 'data:application/pdf;base64,JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKPD4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovQ29udGVudHMgNCAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0xlbmd0aCA0Mgo+PgpzdHJlYW0KQlQKL0YxIDEyIFRmCjEwMCA3MDAgVGQKKEluY29tZSBDZXJ0aWZpY2F0ZSkgVGoKRVQKZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgNQowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMDkgMDAwMDAgbiAKMDAwMDAwMDA1OCAwMDAwMCBuIAowMDAwMDAwMTE1IDAwMDAwIG4gCjAwMDAwMDAyMDQgMDAwMDAgbiAKdHJhaWxlcgo8PAovU2l6ZSA1Ci9Sb290IDEgMCBSCj4+CnN0YXJ0eHJlZgoyOTYKJSVFT0Y='})}>View</button>
+                    <button className="btn-verify">Verify</button>
+                    <button className="btn-reject-doc">Reject</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="document-verification-card">
+              <div className="student-header">
+                <h4>Sarah Johnson (ID: 10235)</h4>
+                <span className="application-id">Application #A002</span>
+              </div>
+              
+              <div className="documents-list">
+                <div className="doc-item verified">
+                  <span className="doc-icon">📄</span>
+                  <div className="doc-details">
+                    <span className="doc-name">Academic_Transcript.pdf</span>
+                    <span className="doc-date">Uploaded: 2025-01-10</span>
+                  </div>
+                  <span className="doc-status verified">✓ Verified</span>
+                </div>
+                
+                <div className="doc-item">
+                  <span className="doc-icon">🏆</span>
+                  <div className="doc-details">
+                    <span className="doc-name">Achievement_Certificate.pdf</span>
+                    <span className="doc-date">Uploaded: 2025-01-09</span>
+                  </div>
+                  <div className="doc-actions">
+                    <button className="btn-view" onClick={() => setViewingDocument({name: 'Achievement_Certificate.pdf', url: 'data:application/pdf;base64,JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKPD4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovQ29udGVudHMgNCAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0xlbmd0aCA0Ngo+PgpzdHJlYW0KQlQKL0YxIDEyIFRmCjEwMCA3MDAgVGQKKEFjaGlldmVtZW50IENlcnRpZmljYXRlKSBUagpFVAplbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCA1CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAwOSAwMDAwMCBuIAowMDAwMDAwMDU4IDAwMDAwIG4gCjAwMDAwMDAxMTUgMDAwMDAgbiAKMDAwMDAwMDIwNCAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDUKL1Jvb3QgMSAwIFIKPj4Kc3RhcnR4cmVmCjMwMAolJUVPRg=='})}>View</button>
+                    <button className="btn-verify">Verify</button>
+                    <button className="btn-reject-doc">Reject</button>
+                  </div>
+                </div>
+                
+                <div className="doc-item rejected">
+                  <span className="doc-icon">🆔</span>
+                  <div className="doc-details">
+                    <span className="doc-name">Identity_Proof.jpg</span>
+                    <span className="doc-date">Uploaded: 2025-01-08</span>
+                  </div>
+                  <span className="doc-status rejected">✗ Rejected</span>
+                </div>
+                
+                <div className="doc-item verified">
+                  <span className="doc-icon">💰</span>
+                  <div className="doc-details">
+                    <span className="doc-name">Income_Certificate.pdf</span>
+                    <span className="doc-date">Uploaded: 2025-01-07</span>
+                  </div>
+                  <span className="doc-status verified">✓ Verified</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
+      
+      {viewingDocument && (
+        <div className="document-modal">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Document Viewer</h3>
+              <button className="close-modal" onClick={() => setViewingDocument(null)}>×</button>
+            </div>
+            <div className="modal-body">
+              <h4>{viewingDocument.name}</h4>
+              <div className="document-viewer">
+                <iframe 
+                  src={viewingDocument.url} 
+                  width="100%" 
+                  height="600px"
+                  title="Document Viewer"
+                >
+                  <p>Document cannot be displayed. <a href={viewingDocument.url} target="_blank" rel="noopener noreferrer">Download</a></p>
+                </iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
