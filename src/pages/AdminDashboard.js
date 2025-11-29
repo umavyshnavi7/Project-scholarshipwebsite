@@ -23,6 +23,15 @@ function AdminDashboard() {
   const [editingScholarship, setEditingScholarship] = useState(null);
   const [expandedApp, setExpandedApp] = useState(null);
   const [viewingDocument, setViewingDocument] = useState(null);
+  const [documentStatuses, setDocumentStatuses] = useState({});
+
+  const handleVerifyDocument = (docId) => {
+    setDocumentStatuses(prev => ({...prev, [docId]: 'verified'}));
+  };
+
+  const handleRejectDocument = (docId) => {
+    setDocumentStatuses(prev => ({...prev, [docId]: 'rejected'}));
+  };
   const [newScholarship, setNewScholarship] = useState({
     title: '',
     description: '',
@@ -557,30 +566,42 @@ function AdminDashboard() {
               </div>
               
               <div className="documents-list">
-                <div className="doc-item">
+                <div className={`doc-item ${documentStatuses['doc1'] || ''}`}>
                   <span className="doc-icon">📄</span>
                   <div className="doc-details">
                     <span className="doc-name">Academic_Transcript.pdf</span>
                     <span className="doc-date">Uploaded: 2025-01-15</span>
                   </div>
-                  <div className="doc-actions">
-                    <button className="btn-view" onClick={() => setViewingDocument({name: 'Academic_Transcript.pdf', url: 'data:application/pdf;base64,JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKPD4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovQ29udGVudHMgNCAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0xlbmd0aCA0NAo+PgpzdHJlYW0KQlQKL0YxIDEyIFRmCjEwMCA3MDAgVGQKKFNhbXBsZSBBY2FkZW1pYyBUcmFuc2NyaXB0KSBUagpFVAplbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCA1CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAwOSAwMDAwMCBuIAowMDAwMDAwMDU4IDAwMDAwIG4gCjAwMDAwMDAxMTUgMDAwMDAgbiAKMDAwMDAwMDIwNCAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDUKL1Jvb3QgMSAwIFIKPj4Kc3RhcnR4cmVmCjI5OAolJUVPRg=='})}>View</button>
-                    <button className="btn-verify">Verify</button>
-                    <button className="btn-reject-doc">Reject</button>
-                  </div>
+                  {documentStatuses['doc1'] ? (
+                    <span className={`doc-status ${documentStatuses['doc1']}`}>
+                      {documentStatuses['doc1'] === 'verified' ? '✓ Verified' : '✗ Rejected'}
+                    </span>
+                  ) : (
+                    <div className="doc-actions">
+                      <button className="btn-view" onClick={() => setViewingDocument({name: 'Academic_Transcript.pdf', url: 'data:application/pdf;base64,JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKPD4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovQ29udGVudHMgNCAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0xlbmd0aCA0NAo+PgpzdHJlYW0KQlQKL0YxIDEyIFRmCjEwMCA3MDAgVGQKKFNhbXBsZSBBY2FkZW1pYyBUcmFuc2NyaXB0KSBUagpFVAplbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCA1CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAwOSAwMDAwMCBuIAowMDAwMDAwMDU4IDAwMDAwIG4gCjAwMDAwMDAxMTUgMDAwMDAgbiAKMDAwMDAwMDIwNCAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDUKL1Jvb3QgMSAwIFIKPj4Kc3RhcnR4cmVmCjI5OAolJUVPRg=='})}>View</button>
+                      <button className="btn-verify" onClick={() => handleVerifyDocument('doc1')}>Verify</button>
+                      <button className="btn-reject-doc" onClick={() => handleRejectDocument('doc1')}>Reject</button>
+                    </div>
+                  )}
                 </div>
                 
-                <div className="doc-item">
+                <div className={`doc-item ${documentStatuses['doc2'] || ''}`}>
                   <span className="doc-icon">🏆</span>
                   <div className="doc-details">
                     <span className="doc-name">Merit_Certificate.pdf</span>
                     <span className="doc-date">Uploaded: 2025-01-14</span>
                   </div>
-                  <div className="doc-actions">
-                    <button className="btn-view" onClick={() => setViewingDocument({name: 'Merit_Certificate.pdf', url: 'data:application/pdf;base64,JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKPD4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovQ29udGVudHMgNCAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0xlbmd0aCA0MAo+PgpzdHJlYW0KQlQKL0YxIDEyIFRmCjEwMCA3MDAgVGQKKE1lcml0IENlcnRpZmljYXRlKSBUagpFVAplbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCA1CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAwOSAwMDAwMCBuIAowMDAwMDAwMDU4IDAwMDAwIG4gCjAwMDAwMDAxMTUgMDAwMDAgbiAKMDAwMDAwMDIwNCAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDUKL1Jvb3QgMSAwIFIKPj4Kc3RhcnR4cmVmCjI5NAolJUVPRg=='})}>View</button>
-                    <button className="btn-verify">Verify</button>
-                    <button className="btn-reject-doc">Reject</button>
-                  </div>
+                  {documentStatuses['doc2'] ? (
+                    <span className={`doc-status ${documentStatuses['doc2']}`}>
+                      {documentStatuses['doc2'] === 'verified' ? '✓ Verified' : '✗ Rejected'}
+                    </span>
+                  ) : (
+                    <div className="doc-actions">
+                      <button className="btn-view" onClick={() => setViewingDocument({name: 'Merit_Certificate.pdf', url: 'data:application/pdf;base64,JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKPD4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovQ29udGVudHMgNCAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0xlbmd0aCA0MAo+PgpzdHJlYW0KQlQKL0YxIDEyIFRmCjEwMCA3MDAgVGQKKE1lcml0IENlcnRpZmljYXRlKSBUagpFVAplbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCA1CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAwOSAwMDAwMCBuIAowMDAwMDAwMDU4IDAwMDAwIG4gCjAwMDAwMDAxMTUgMDAwMDAgbiAKMDAwMDAwMDIwNCAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDUKL1Jvb3QgMSAwIFIKPj4Kc3RhcnR4cmVmCjI5NAolJUVPRg=='})}>View</button>
+                      <button className="btn-verify" onClick={() => handleVerifyDocument('doc2')}>Verify</button>
+                      <button className="btn-reject-doc" onClick={() => handleRejectDocument('doc2')}>Reject</button>
+                    </div>
+                  )}
                 </div>
                 
                 <div className="doc-item verified">
@@ -592,17 +613,23 @@ function AdminDashboard() {
                   <span className="doc-status verified">✓ Verified</span>
                 </div>
                 
-                <div className="doc-item">
+                <div className={`doc-item ${documentStatuses['doc4'] || ''}`}>
                   <span className="doc-icon">💰</span>
                   <div className="doc-details">
                     <span className="doc-name">Income_Certificate.pdf</span>
                     <span className="doc-date">Uploaded: 2025-01-12</span>
                   </div>
-                  <div className="doc-actions">
-                    <button className="btn-view" onClick={() => setViewingDocument({name: 'Income_Certificate.pdf', url: 'data:application/pdf;base64,JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKPD4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovQ29udGVudHMgNCAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0xlbmd0aCA0Mgo+PgpzdHJlYW0KQlQKL0YxIDEyIFRmCjEwMCA3MDAgVGQKKEluY29tZSBDZXJ0aWZpY2F0ZSkgVGoKRVQKZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgNQowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMDkgMDAwMDAgbiAKMDAwMDAwMDA1OCAwMDAwMCBuIAowMDAwMDAwMTE1IDAwMDAwIG4gCjAwMDAwMDAyMDQgMDAwMDAgbiAKdHJhaWxlcgo8PAovU2l6ZSA1Ci9Sb290IDEgMCBSCj4+CnN0YXJ0eHJlZgoyOTYKJSVFT0Y='})}>View</button>
-                    <button className="btn-verify">Verify</button>
-                    <button className="btn-reject-doc">Reject</button>
-                  </div>
+                  {documentStatuses['doc4'] ? (
+                    <span className={`doc-status ${documentStatuses['doc4']}`}>
+                      {documentStatuses['doc4'] === 'verified' ? '✓ Verified' : '✗ Rejected'}
+                    </span>
+                  ) : (
+                    <div className="doc-actions">
+                      <button className="btn-view" onClick={() => setViewingDocument({name: 'Income_Certificate.pdf', url: 'data:application/pdf;base64,JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKPD4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovQ29udGVudHMgNCAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0xlbmd0aCA0Mgo+PgpzdHJlYW0KQlQKL0YxIDEyIFRmCjEwMCA3MDAgVGQKKEluY29tZSBDZXJ0aWZpY2F0ZSkgVGoKRVQKZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgNQowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMDkgMDAwMDAgbiAKMDAwMDAwMDA1OCAwMDAwMCBuIAowMDAwMDAwMTE1IDAwMDAwIG4gCjAwMDAwMDAyMDQgMDAwMDAgbiAKdHJhaWxlcgo8PAovU2l6ZSA1Ci9Sb290IDEgMCBSCj4+CnN0YXJ0eHJlZgoyOTYKJSVFT0Y='})}>View</button>
+                      <button className="btn-verify" onClick={() => handleVerifyDocument('doc4')}>Verify</button>
+                      <button className="btn-reject-doc" onClick={() => handleRejectDocument('doc4')}>Reject</button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -623,17 +650,23 @@ function AdminDashboard() {
                   <span className="doc-status verified">✓ Verified</span>
                 </div>
                 
-                <div className="doc-item">
+                <div className={`doc-item ${documentStatuses['doc5'] || ''}`}>
                   <span className="doc-icon">🏆</span>
                   <div className="doc-details">
                     <span className="doc-name">Achievement_Certificate.pdf</span>
                     <span className="doc-date">Uploaded: 2025-01-09</span>
                   </div>
-                  <div className="doc-actions">
-                    <button className="btn-view" onClick={() => setViewingDocument({name: 'Achievement_Certificate.pdf', url: 'data:application/pdf;base64,JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKPD4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovQ29udGVudHMgNCAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0xlbmd0aCA0Ngo+PgpzdHJlYW0KQlQKL0YxIDEyIFRmCjEwMCA3MDAgVGQKKEFjaGlldmVtZW50IENlcnRpZmljYXRlKSBUagpFVAplbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCA1CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAwOSAwMDAwMCBuIAowMDAwMDAwMDU4IDAwMDAwIG4gCjAwMDAwMDAxMTUgMDAwMDAgbiAKMDAwMDAwMDIwNCAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDUKL1Jvb3QgMSAwIFIKPj4Kc3RhcnR4cmVmCjMwMAolJUVPRg=='})}>View</button>
-                    <button className="btn-verify">Verify</button>
-                    <button className="btn-reject-doc">Reject</button>
-                  </div>
+                  {documentStatuses['doc5'] ? (
+                    <span className={`doc-status ${documentStatuses['doc5']}`}>
+                      {documentStatuses['doc5'] === 'verified' ? '✓ Verified' : '✗ Rejected'}
+                    </span>
+                  ) : (
+                    <div className="doc-actions">
+                      <button className="btn-view" onClick={() => setViewingDocument({name: 'Achievement_Certificate.pdf', url: 'data:application/pdf;base64,JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKPD4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovQ29udGVudHMgNCAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0xlbmd0aCA0Ngo+PgpzdHJlYW0KQlQKL0YxIDEyIFRmCjEwMCA3MDAgVGQKKEFjaGlldmVtZW50IENlcnRpZmljYXRlKSBUagpFVAplbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCA1CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAwOSAwMDAwMCBuIAowMDAwMDAwMDU4IDAwMDAwIG4gCjAwMDAwMDAxMTUgMDAwMDAgbiAKMDAwMDAwMDIwNCAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDUKL1Jvb3QgMSAwIFIKPj4Kc3RhcnR4cmVmCjMwMAolJUVPRg=='})}>View</button>
+                      <button className="btn-verify" onClick={() => handleVerifyDocument('doc5')}>Verify</button>
+                      <button className="btn-reject-doc" onClick={() => handleRejectDocument('doc5')}>Reject</button>
+                    </div>
+                  )}
                 </div>
                 
                 <div className="doc-item rejected">
