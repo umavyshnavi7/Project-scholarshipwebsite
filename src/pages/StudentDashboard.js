@@ -7,7 +7,7 @@ import './StudentDashboard.css';
 
 function StudentDashboard() {
   const { state } = useApp();
-  const { user, notifications } = state;
+  const { user } = state;
   const { logout } = useAuth();
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -215,7 +215,7 @@ function StudentDashboard() {
     }
 
     return () => clearInterval(interval);
-  }, [user?.name, nearestDeadline]);
+  }, [user?.name, nearestDeadline, hasShownWelcome, hasShownDeadlineReminder, hasShownProfileComplete]);
 
   return (
     <div className="student-dashboard">

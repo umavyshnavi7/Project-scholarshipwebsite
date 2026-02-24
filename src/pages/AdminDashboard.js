@@ -1,10 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useScholarships } from '../hooks/useScholarships';
-import { usePerformance } from '../hooks/usePerformance';
 import NotificationBell from '../components/NotificationBell';
 import ThemeToggle from '../components/ThemeToggle';
-import Chart from '../components/Chart';
 import AnimatedCard from '../components/AnimatedCard';
 import './AdminDashboard.css';
 
